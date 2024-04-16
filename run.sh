@@ -1,3 +1,4 @@
+docker stop segment | true
 docker rmi chinese-segment | true
 docker rm segment | true
 docker build -t chinese-segment .

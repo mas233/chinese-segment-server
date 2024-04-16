@@ -19,9 +19,11 @@ WORKDIR /data
 
 COPY . .
 
-RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install -i https://mirror.baidu.com/pypi/simple/ --upgrade pip
 
 RUN python3 -m pip install -i https://mirror.baidu.com/pypi/simple/ -r requirements.txt
 
-CMD ["python3", "chinese_segment_service.py" ]
+RUN python3 -m pip install -i https://mirror.baidu.com/pypi/simple/ gunicorn
+
+CMD ["gunicorn", "--workers=4","--bind=0.0.0.0:5050","chinese_segment_service:app" ]
 
