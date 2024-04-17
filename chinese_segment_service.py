@@ -4,9 +4,15 @@ from LAC import LAC
 app = Flask(__name__)
 
 
-@app.route('/v2/segment', methods=['GET'])
+@app.route('/v1/segment', methods=['GET', 'POST'])
 def text_segment():
-    query = request.args.get('query', '', type=str)
+    query = get_query('query')
+    if query == '':
+        return jsonify({
+            'code': 400,
+            'msg': 'query is empty',
+            'data': ''
+        })
     lac = LAC(mode='seg')
     words = lac.run(query)
     return jsonify({
@@ -16,9 +22,15 @@ def text_segment():
     })
 
 
-@app.route('/v2/lac', methods=['GET'])
+@app.route('/v1/lac', methods=['GET', 'POST'])
 def text_lac():
-    query = request.args.get('query', '', type=str)
+    query = get_query('query')
+    if query == '':
+        return jsonify({
+            'code': 400,
+            'msg': 'query is empty',
+            'data': ''
+        })
     lac = LAC(mode='lac')
     words = lac.run(query)
     return jsonify({
@@ -31,9 +43,15 @@ def text_lac():
     })
 
 
-@app.route('/v2/rank', methods=['GET'])
+@app.route('/v1/rank', methods=['GET', 'POST'])
 def text_rank():
-    query = request.args.get('query', '', type=str)
+    query = get_query('query')
+    if query == '':
+        return jsonify({
+            'code': 400,
+            'msg': 'query is empty',
+            'data': ''
+        })
     lac = LAC(mode='rank')
     words = lac.run(query)
     return jsonify({
@@ -41,6 +59,15 @@ def text_rank():
         'msg': 'success',
         'data': words
     })
+
+
+def get_query(arg_name):
+    query = request.args.get(arg_name, '', type=str)
+    if query == '':
+        query = request.form.get(arg_name, '', type=str)
+    if query == '':
+        query = request.json.get(arg_name, '', type=str)
+    return query
 
 
 if __name__ == '__main__':
