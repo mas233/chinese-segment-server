@@ -25,5 +25,5 @@ RUN python3 -m pip install -i https://mirror.baidu.com/pypi/simple/ -r requireme
 
 RUN python3 -m pip install -i https://mirror.baidu.com/pypi/simple/ gunicorn
 
-CMD ["gunicorn", "--workers=4","--bind=0.0.0.0:5050","chinese_segment_service:app" ]
+CMD ["gunicorn", "--workers=3","--bind=0.0.0.0:5050","chinese_segment_service:app" ]
 
